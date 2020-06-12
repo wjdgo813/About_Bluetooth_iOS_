@@ -16,7 +16,9 @@ Bluetooth low energy 통신에서는 **central**과 **peripheral** 이 두가지
 
 각각 역할을 수행할 때, task 설정을 다르게 한다. Peripherals은 무선으로 데이터를 알려 존재를 알린다. Centrals은 근처에 찾고자하는 Peripherals를 찾는다. Centrals이 원하는 Peripheral를 발견하면, connect를 시도한다. 그리고 Peripheral의 데이터를 exploring하고 interacting하기 시작한다. 
 
-**Relevalnt Chapter: [Core Bluetooth Overview](./CoreBluetooth_Overview)**
+**Relevalnt Chapter: [Core Bluetooth Overview](<https://github.com/wjdgo813/About_CoreBluetooth/blob/master/CoreBluetooth_Overview.md>)**
+
+
 
 
 
