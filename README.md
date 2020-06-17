@@ -1,6 +1,8 @@
+https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/AboutCoreBluetooth/Introduction.html#//apple_ref/doc/uid/TP40013257-CH1-SW1
+
 # Introduction
 
-CoreBluetooth framework는 iOS와 Mac이 블루투스 장비와 통신하기 위한 Class들을 제공해준다. 이를 통해 너의 앱은 peripheral devices를 발견, 탐구, 상호작용이 가능하다. 
+CoreBluetooth framework는 iOS와 Mac이 블루투스 장비와 통신하기 위한 Class들을 제공해준다. 이것들을 통해 peripheral devices를 발견하고 조회하고 통신이 가능하도록 도와준다. 
 
 <img src="./img/introduction.png"/>
 
