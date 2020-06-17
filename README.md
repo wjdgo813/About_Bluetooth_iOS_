@@ -22,7 +22,7 @@ Bluetooth low energy 통신에서는 **central**과 **peripheral** 이 두가지
 
 Core Bluetooth framework은 Bluetooth 4.0의 구체화 된 내용을 추상화 하여 제공한다. 만약 central 역할 하는 앱을 만든다면, Core Bluetooth는 Peripheral들을 발견하고 연결하는데 쉽게 만들어 준다. 또한 Peripheral을 explore하고 통신하는데 도와준다. 거기에 CoreBluetooth는 peripheral의 역할을 하는데에도 도와준다.
 
-**Relevant Chapters:** [Performing Common Central Role Tasks]()
+**Relevant Chapters:** [Performing Common Central Role Tasks](<https://github.com/wjdgo813/About_CoreBluetooth/blob/master/Performing_Common_Central_Role_Tasks.md>)
 
 
 
