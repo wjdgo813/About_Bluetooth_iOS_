@@ -26,7 +26,13 @@ Core Bluetooth framework은 Bluetooth 4.0의 구체화 된 내용을 추상화 �
 
 **Relevant Chapters: [Performing Common Central Role Tasks](<https://github.com/wjdgo813/About_CoreBluetooth/blob/master/Performing_Common_Central_Role_Tasks.md>), [Performing Common Peripheral Role Tasks](<https://github.com/wjdgo813/About_CoreBluetooth/blob/master/Performing%20Common_Peripheral_Role_Tasks.md>)**
 
+### iOS App States Affect Bluetooth Behavior
 
+당신이 만든 앱이 백그라운드에 진입하거나 suspended 상태가 되었다면, 블루투스와 관련된 것들은 모두 영향 받는다. 보통, 앱들은 백그라운드에 들어가거나 suspended 상태가 되면 Bluetooth low energy와 연관된 일들은 수행 할 수 없다. 즉, 백그라운드에서도 블루투스 작업이 필요하다면, 백그라운드 모드 중 Peripheral이나 Central을 지원하도록 선언해야 한다. 한개 이상의 백그라운드 모드를 선언하여 작동되게 했다면, 앱이 백그라운드에있는 동안 Bluetooth 작업이 다르게 작동한다는 것을 고려해야 한다. 
+
+백그라운드를 지원하는 앱이라 하여도, 시스템이 포그라운드 메모리 확보를 위해 언제든 종료할 수 있다. iOS 7부터 Core Bluetooth는 central 혹은 peripheral 상태 정보를 저장하고, 앱이 실행 될 때 해당 상태로 복원한다. 
+
+**Relevant Chapters: []**
 
 
 
