@@ -32,7 +32,7 @@ Core Bluetooth framework은 Bluetooth 4.0의 구체화 된 내용을 추상화 �
 
 백그라운드를 지원하는 앱이라 하여도, 시스템이 포그라운드 메모리 확보를 위해 언제든 종료할 수 있다. iOS 7부터 Core Bluetooth는 central 혹은 peripheral 상태 정보를 저장하고, 앱이 실행 될 때 해당 상태로 복원한다. 
 
-**Relevant Chapters: []**
+**Relevant Chapters: [Core Bluetooth Background Processing for iOS Apps](<https://github.com/wjdgo813/About_CoreBluetooth/blob/master/CB_Background_Processing.md>)**
 
 
 
