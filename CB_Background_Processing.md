@@ -2,23 +2,23 @@
 
 iOS 앱들은 실행되는 것이 백그라운드 상태인지 포어그라운드 상태인지 알아야 한다. 보통, 포어그라운드 보다 백그라운드에서 제약들이 더 많다. 앱 디바이스의 시스템 리소스들이 더욱 제한되어 있기 때문이다. 
 
-일반적으로 Core Bluetooth가 가진 공통 업무들은(peripheral이던 central이던) 백그라운드나 suspended 상태에서 비활성화 되어있다. 그래서 개발자는 백그라운드에서 동작하도록 지원하는 것을 명시해야 한다. 블루투스와 연관된 이벤트가 발생하면 suspend 상태라 하더라도 앱을 깨울 수 있도록 허락해야한다. 앱이 광범위한 백그라운드 업무를 수행하지 않더라도, 중요한 이벤트가 발생할 때 시스템에 알람을 요청 할 수 있다. 
+일반적으로 Core Bluetooth가 가진 공통 업무들은(peripheral이던 central이던) 백그라운드나 suspended 상태에서는 제약이 많다. 그래서 개발자는 백그라운드에서 동작을 지원하도록 명시해야 할 것들이 있다. 블루투스와 연관된 이벤트가 발생하면 suspend 상태라 하더라도 앱을 깨울 수 있도록 허락해야한다. 앱이 광범위한 백그라운드 업무를 수행하지 않더라도, 중요한 이벤트가 발생할 때 시스템에 알람을 요청 할 수 있다. 
 
-그러나 당신이 백그라운드를 지원하도록 선언하였어도 영원히 백그라운드에서 동작하지는 않는다. 어떤 시점에서 시스템은 현재 포그라운드 메모리를 확보하기 위해 앱을 종료 할 수 있기 때문이다. 
+그러나 당신이 백그라운드를 지원하도록 선언하였어도 영원히 백그라운드에서 동작하지는 않는다. 어떤 시점에서 시스템은 현재 포그라운드 메모리를 확보하기 위해 앱을 종료 하기 때문이다. 
 
 다행히도 iOS7부터 CoreBluetooth는 central과 peripheral state 정보를 저장하고, 앱이 다시 실행 될 때, 그 상태 그대로 복구한다. 이 기능을 통해 블루투스와 관련된 기능을 오랫동안 사용 할 수 있다.
 
 ## Foreground-Only Apps
 
-대부분의 앱들은 특정 백그라운드 일을 위한 권한을 요청하지 않는다면, 백그라운드 상태로 진입 후 빠르게 suspend 상태로 진입한다. 그렇게 되면 suspend 상태에서 당신의 앱은 블루투스 관련된 일은 할 수 없고, 다시 포어그라운드로 돌아오지 않는 이상 이벤트도 받을 수 없다. 
+대부분의 앱들은 백그라운드에서 특정 일들을 위한 권한을 요청하지 않는다면, 백그라운드 상태로 진입 후 빠르게 suspend 상태로 진입한다. 그렇게 되면 suspend 상태에서 당신의 앱은 블루투스 관련된 일은 할 수 없고, 다시 포어그라운드로 돌아오지 않는 이상 이벤트도 받을 수 없다. 
 
-foreground만 지원하는 앱의 central은 백그라운드 상태에서 광고하고 있는 peripheral을 scan 할 수도 발견도 할 수 없다. 마찬가지로 Peripheral도 광고는 불가능하고, characteristic value에 접근하려고 하면 에러를 받게 된다. 
+foreground만 지원하는 앱의 central은 광고하고 있는 peripheral을 백그라운드 상태에서 scan 할 수도 발견도 할 수 없다. 마찬가지로 Peripheral도 광고는 불가능하고, characteristic value에 접근하려고 하면 에러를 받게 된다. 
 
-사용사례에 따라 당신의 앱의 동작들은 여러가지로 영향을 받을 수 있다. 예를 들면, 연결 되어있는 peripheral의 데이터와 통신하려고 하는데, 그때 너의 앱이 suspend 상태로 들어갔다고(다른 앱을 키게 되서) 가정해보자. 이때 peripheral과의 연결이 끊긴다면, 당신의 앱은 다시 실행 될 때까지 연결이 끊겼다는 사실을 알 수 없다. 
+사용사례에 따라 당신의 앱의 동작들은 여러가지로 영향을 받을 수 있다. 예를 들면, 연결 되어있는 peripheral의 데이터와 통신하려고 하는데, 그때 앱이 suspend 상태로 들어갔다고(다른 앱을 키게 되서) 가정해보자. 이때 peripheral과의 연결이 끊긴다면, 당신의 앱은 다시 실행 될 때까지 연결이 끊겼다는 사실을 알 수 없다. 
 
 ### Take Advantage of Peripheral Connection Options
 
-백그라운드나 suspend 상태로 들어간 상태에서 블루투스와 관련된 이벤트가 발생하면 시스템에 의해 큐에 축적되고, 앱이 포어그라운드로 올라 올 때, 그 이벤트를 전달한다. 즉, Core Bluetooth는 central 이벤트가 발생할 때 유저에게 전달할 방법을 제공한다. 그런 다음 유저는 이런 특정 이벤트를 통해 앱을 포그라운드로 가져와야하는지 여부를 결정한다. 
+백그라운드나 suspend 상태로 들어간 상태에서 블루투스와 관련된 이벤트가 발생하면 시스템에 의해 큐에 저장되고, 앱이 포어그라운드로 올라 올 때, 그 이벤트를 전달한다. 즉, Core Bluetooth는 central 이벤트가 발생할 때 유저에게 전달할 방법을 제공한다. 그런 다음 유저는 이런 특정 이벤트를 통해 앱을 포그라운드로 가져와야하는지 여부를 결정한다. 
 
 다음은 [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager) 클래스의 메서드인 [connectPeripheral:options:](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager/1518766-connect) 를 peripheral에 연결 할 때, peripheral의 옵션에 포함하여 이러한 알림을 제공 할 수 있다. 
 
@@ -80,4 +80,107 @@ State 유지와 복구가 Core bluetooth에 내장되어 있기 때문에, 앱�
 
 Core bluetooth 프레임워크는 Central과 Peripheral의 상태 관리를 지원한다. Central 앱을 구현했고 state 보존과 복구를 지원한다면, 앱이 메모리 이슈로 중지 될 때 시스템은 Central 매니저 객체의 state를 저장한다. (만약 여러개의 Central 매니저를 가지고 있다면, 한가지의 매니저만 선택 할 수 있다.)  특히 [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager) 객체는 아래의 절차를 따른다.
 
-- Central 매니저의 Service는 
+- Central Manager가 검색 한 서비스 및 검색 시작시 지정된 모든 검색 옵션
+- Central Manager가 연결을 시도했거나 이미 연결 한 Peripheral
+- Central Manager가 구독한 Characteristics
+
+Peripheral을 구현한 앱도 마찬가지로 state 보존 및 복원을 할 수 있다. 
+
+- Peripheral 매니저가 advertising 하고 있던 데이터
+- Peripheral 매니저가 DB에 게시한 Service 및  Characteristic
+- Characteristics value가 구독하고 있던 Central
+
+백그라운드에서 앱이 재실행 됐을 때, (scanning 중이던 앱이 peripheral을 발견 했을 때) central, peripheral 매니져가 객체를 생성해서 state를 저장한다. 이제부터 state 를 저장하고 복원하는 것에 대해 자세히 알아볼 것이다.
+
+### Adding Support for State Preservation and Restoration
+
+State 보존과 복원은 Core bluetooth의 옵트인 기능이므로 앱에서 동의를 구하는 절차가 필요하다. 이런 기능을 지원하려면 앱에서 아래의 절차가 필요하다. 
+
+- (Required) central이나 peripheral manager 객체를 할당할 때, state 보존이나 복원하려면 옵트인 해야한다. 
+- (Required) 시스템에 의해 앱이 재실행 됐을 때, Central이나 Peripheral 객체는 인스턴스화 되어야 한다.
+- (Required) Restoration delegate 메소드를 구현해야한다. 
+- (Optional) Central과 Peripheral 매니저의 초기화 프로세스를 업데이트 해야한다. 
+
+#### Opt In to State Preservation and Restoration
+
+State 보존과 복원 기능을 옵트인 하기 위해서는 Cental이나 Peripheral 매니저를 초기화 할 때, unique restoration identifier만 넘겨주면 된다. *restoration identifier* 는 String이며 CoreBluetooth나 앱이 Peripheral인지 Central 매니저인지 식별하는 값이다. 이 String 값은 코드에만 중요하지만 Core Bluetooth에 태그가 지정된 객체의 상태를 보존해야 함을 알려준다. 그래서 Core Bluetooth는 restoration identifier를 가지고 있는 객체의 State를 보존한다. 
+
+Central을 구현한 앱에서 예를 들면, State를 보존하고 복구하는 것을 옵트인 하려면 CBCentralManager를 객체 할 때만 사용하면 된다. 초기화 option에 CBCentralManagerOptionRestoreIdentifierKey를 넘겨주면 된다. 
+
+~~~objective-c
+    myCentralManager =
+        [[CBCentralManager alloc] initWithDelegate:self queue:nil
+         options:@{ CBCentralManagerOptionRestoreIdentifierKey:
+         @"myCentralManagerIdentifier" }];
+~~~
+
+Peripheral은 자세하게 코드로 설명하지 않았지만, 위와 마찬가지로 Peripheral 매니저 객체를 초기화 할 때 [CBPeripheralManagerOptionRestoreIdentifierKey](https://developer.apple.com/documentation/corebluetooth/cbperipheralmanageroptionrestoreidentifierkey)를 옵션에 넘겨주면 된다. 
+
+>  하나의 앱에서 다수의 Peripheral과 Central을 구현할 수 있으므로 restoration identifier 유일해야 한다. 시스템에서 Central인지 Peripheral인지 명확히 구분해야하기 때문이다.
+
+#### Reinstantiate Your Central and Peripheral Managers
+
+시스템에 의해 앱이 백그라운드에서 재실행 됐을 때, 첫번째로 해야할 일은 매니저를 처음 초기화 했을 때 넘긴 restoration identifiers를 통해 Central 혹은 Peripheral 매니저를 인스턴스화 하는 것이다. 
+
+앱이 central이나 peripheral manager 하나만 사용하고 있다면, 그 매니저는 앱의 라이프 사이클동안만 존재한다. 더 이상 당신이 해야할 일은 없다. 하지만 한개 이상의 Central 혹은 Peripheral 매니저를 사용하거나 앱의 라이프사이클을 벗어나서도 사용을 해야 한다면, 시스템에 의해 앱이 재실행 됐을 때, 앱은 인스턴스화 동작이 이루어져야 한다. 앱이 terminate 됐을 때, app delegate의 [application:didFinishLaunchingWithOptions:](https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622921-application) 메서드에서 옵션키([UIApplicationLaunchOptionsBluetoothPeripheralsKey](https://developer.apple.com/documentation/uikit/uiapplication/launchoptionskey/1623116-bluetoothperipherals) 혹은 [UIApplicationLaunchOptionsBluetoothCentralsKey](https://developer.apple.com/documentation/uikit/uiapplication/launchoptionskey/1622965-bluetoothcentrals))를 이용하여 restoration identifiers 리스트를 얻을 수 있다. 
+
+아래의 코드는 앱이 재실행 됐을 때, Central 매니저의 모든 restoration identifiers 리스트를 받아오는 코드다.
+
+~~~objective-c
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+ 
+    NSArray *centralManagerIdentifiers =
+        launchOptions[UIApplicationLaunchOptionsBluetoothCentralsKey];
+    ...
+~~~
+
+restoration identifiers 리스트를 받은 후에 간단하게 루프를 돌려서 원하는 Central 매니저 객체를 찾으면 된다.
+
+#### Implement the Appropriate Restoration Delegate Method
+
+Central, Peripheral 매니저들이 인스턴스화 하고 나서 복구한 그들의 상태를 블루투스 상태와 동기화 해야한다. 시스템이 실행중에 대신 했었던 일들을 속도를 높이려면, restoration delegate 메서드를 구현해야한다. 
+
+Central manager는 [centralManager:willRestoreState:](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518819-centralmanager) 를 구현하고, peripheral은 [peripheralManager:willRestoreState:](https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/1393317-peripheralmanager) 를 구현해야한다. 
+
+> Core Bluetooth의 State 보존과 복구 기능을 옵트인 하기 위해서는 백그라운드에서 블루투스 관련 일을 완료하고 재실행 됐을 때, [centralManager:willRestoreState:](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518819-centralmanager) 와 [peripheralManager:willRestoreState:](https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/1393317-peripheralmanager) 메서드를 호출하면 된다. state 보존을 지원하지 않는 앱의 경우에는 [centralManagerDidUpdateState:](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518888-centralmanagerdidupdatestate) 혹은 [peripheralManagerDidUpdateState:](https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/1393271-peripheralmanagerdidupdatestate) delegate 메서드가 첫번쨰로 호출된다. 
+
+위에서 말한 delegate 메서드 두개에서 마지막 파라미터는 dictionary로 넘겨주는데, 앱이 종료 됐을 때 보존 된 정보가 담긴 딕셔너리를 넘긴다. 이용 가능한 Central Manager State Restoration Options key 리스트를 보려면 *[CBCentralManagerDelegate Protocol Reference](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate)* 과  *[CBPeripheralManagerDelegate Protocol Reference](https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate)* 에서 Peripheral_Manager_State_Restoration_Options을 보면 된다.
+
+[CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager) 객체의 state를 복구하기 위해 [centralManager:willRestoreState:](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518819-centralmanager) 딜리게이트 메서드에서 딕셔너리 키를 사용해야한다. 예를 들어, central manager가 활동중이거나 연결이 지연되고 있을 때, 앱이 중지 되면 앱을 대신해서 시스템이 모니터링을 한다. 밑에서 코드 처럼 [CBCentralManagerRestoredStatePeripheralsKey](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerrestoredstateperipheralskey) 키를 사용하여 peripheral의 리스트들을 얻을 수 있다. 
+
+~~~objective-c
+- (void)centralManager:(CBCentralManager *)central
+      willRestoreState:(NSDictionary *)state {
+ 
+    NSArray *peripherals =
+        state[CBCentralManagerRestoredStatePeripheralsKey];
+    ...
+~~~
+
+위의 예에서 복원 한 peripheral 목록으로 수행하는 작업은 사용 사례에 따라 다릅니다. 예를 들어, central 매니저가 발견한 Peripheral 목록을 유지하려 한다면 해당 Peripheral 장치를 참조하기 위해 복원 된 Peripheral을 해당 목록에 추가 할 수 있다. 
+
+[Connecting to a Peripheral Device After You’ve Discovered It](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/PerformingCommonCentralRoleTasks/PerformingCommonCentralRoleTasks.html#//apple_ref/doc/uid/TP40013257-CH3-SW4)에서 설명했듯이 peripheral을 발견하면 해당 delegate로 콜백을 받는다. 
+
+Peripheral 객체의 state를 복원 시키는 것도 딕셔너리의 key를 사용하는 방법과 유사하다. [peripheralManager:willRestoreState:](https://developer.apple.com/documentation/corebluetooth/cbperipheralmanagerdelegate/1393317-peripheralmanager) delegate 메서드에서 제공되어진다.
+
+#### Update Your Initialization Process
+
+위에서 required step 3가지를 구현 했다면, Central Peripheral 매니저의 초기화 프로세스를 볼 수 있다. 비록 이 절차는 옵셔널이지만, 앱이 안정적으로 돌아가는 지 확인 할 수 있다. 예를 들어, peripheral과 통신 중에 앱이 정지 될 수 있는데, 이때 통신중이던 peripheral을 복구하면 그 시점에 discovering 프로세스가 얼마나 진행 됐는지 알 수 없다. Discovering 프로세스가 중단된 시점 부터 다시 시작되어야 한다. 
+
+예를 들어 [centralManagerDidUpdateState:](https://developer.apple.com/documentation/corebluetooth/cbcentralmanagerdelegate/1518888-centralmanagerdidupdatestate) delegate 메서드에서 앱을 초기화 한다면, 앱이 종료되기 전에 복원 된 peripheral의 characteristic의 service를 성공적으로 발견했는지 확인할 수 있습니다.
+
+~~~objective-c
+    NSUInteger serviceUUIDIndex =
+        [peripheral.services indexOfObjectPassingTest:^BOOL(CBService *obj,
+        NSUInteger index, BOOL *stop) {
+            return [obj.UUID isEqual:myServiceUUIDString];
+        }];
+ 
+    if (serviceUUIDIndex == NSNotFound) {
+        [peripheral discoverServices:@[myServiceUUIDString]];
+        ...
+~~~
+
+위의 예제처럼, service를 발견하기 전에 앱이 중단 된다면, discoverServices를 호출한 시점에서 복원 된 peripheral의 데이터를 찾기 시작한다. 만약 앱이 service를 성공적으로 발견 했다면, 찾고자하는 characteristic을 찾았는지, 이미 구독했는지 여부를 알 수 있다. 이러한 방식으로 초기화 프로세스를 업데이트하면 적절한 시간에 적절한 메소드를 호출 한 것을 보장할 수 있다. 
+
