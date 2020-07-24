@@ -40,7 +40,7 @@ Core Bluetooth framework는 블루투스 관련 많은 트랜잭션을 수행하
 
 예를 들면, Peripheral이나 Central을 구현한 앱의 일 들은 온보드의 라디오를 이용하여 무선으로 통신을 한다. 하지만 무선으로 통신하는 대부분의 기기들은 라디오를 통해 통신이 이루어 지고, adverse하는 행위가 배터리 소모를 많이 일으킨다. 그래서 항상 최적화를 염두에 두고 설계를 해야한다. 
 
-**Relevant Chapters:** [Best Practices for Interacting with a Remote Peripheral Device](https://github.com/wjdgo813/About_CoreBluetooth/blob/master/Best_Practices_ Remote_Peripheral Device.md)
+**Relevant Chapters:** [Best Practices for Interacting with a Remote Peripheral Device](https://github.com/wjdgo813/About_CoreBluetooth/blob/master/Best_Practices_Remote_Peripheral Device.md)
 
 
 
